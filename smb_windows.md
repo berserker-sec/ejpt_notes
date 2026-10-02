@@ -13,3 +13,18 @@ Genellikle ağ güvenliği denetimlerinde, zafiyet barındıran eski ve güvensi
 # **use auxiliary/scanner/smb/smb_login**
 
 Kullanım Alanı: Ağ üzerindeki SMB servislerinde geçerli kimlik bilgilerini, zayıf/varsayılan parolaları veya boş parola ile erişilebilen paylaşımları doğrulamak amacıyla güvenlik denetimlerinde kullanılır.
+
+# **use exploit/windows/smb/psexec**
+
+Bu komut, Metasploit Framework içerisinde yer alan ve Sysinternals PsExec aracının çalışma mantığını taklit eden exploit/windows/smb/psexec modülünü seçer.
+
+Modülün Amacı ve Çalışma Mekanizması
+Bu modül, geçerli yerel veya etki alanı (domain) yönetici kimlik bilgilerine sahip olunduğunda hedef Windows sistem üzerinde uzaktan komut çalıştırmak veya oturum (örneğin Meterpreter) açmak için kullanılır. Klasik bir yazılım açığı (exploit) sömürmek yerine, Windows'un meşru yönetim özelliklerini kötüye kullanır:
+
+SMB Erişimi: Sağlanan kimlik bilgileriyle hedef sistemin SMB servisine (TCP 445) bağlanır.
+
+Dosya Yükleme: Varsayılan olarak yönetimsel gizli paylaşıma (ADMIN$ veya C$) rastgele isimli bir çalıştırılabilir servis dosyası (payload) yükler.
+
+Servis Oluşturma ve Başlatma: Windows Service Control Manager (SCM - RPC üzerinden) ile iletişim kurarak yüklenen bu dosyayı bir Windows servisi olarak kaydeder ve başlatır.
+
+Temizlik: Servis çalışıp oturum sağlandıktan sonra genellikle oluşturulan servis ve yüklenen dosya sistemden silinir.
